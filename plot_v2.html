@@ -1,0 +1,1379 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/handsontable.full.css" type="text/css">
+  <link rel="stylesheet" href="css/bootstrap-select.css">
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/jquery.flot.js"></script>
+  <script src="js/regression.js"></script>
+  <script src="js/papaparse.js" type="text/javascript"></script>
+  <script src="js/handsontable.full.js" type="text/javascript"></script>
+  <script src="js/chroma.min.js" type="text/javascript"></script>
+  <script src="js/plotly-latest.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/echarts.min.js"></script>
+  <script src="js/bootstrap-select.js"></script>
+  <script type="text/javascript" src="../../res/api/js/My97DatePicker/WdatePicker.js"></script>
+  <script src="../../res/otp4/js/lib/layer/layer.js" type="text/javascript"></script>
+  <title>BI - Workspace</title>
+</head>
+
+<body>
+  <div class="container-fluid"  >
+    <div class="row-fluid" style='margin-top:20px'>
+      <input type='file' id='file' class='hidden' onchange='LoadCsv()' />
+
+      <div class='btn-group'>
+        <button id="dataRead" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          	数据读取 <span class="glyphicon glyphicon-file"></span>
+        </button>
+        <ul class="dropdown-menu  multi-level" id="firstUl" role="menu" aria-labelledby="dropdownMenu"> 
+          <li><a href="#" onclick="$('#file').click()">打开文件 </a></li>
+          <li role="separator" class="divider" style='margin:0'></li>
+          <li class="dropdown-submenu">
+          	<a href="#">条件查询</a>
+          	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+          		<li><a href="#" onclick="onCheZhe1()">沥青路面车辙深度逐点查询</a></li>
+          		<li role="separator" class="divider" style='margin:0'></li>
+          		<li><a href="#" onclick="onCheZhe()">沥青路面车辙数据分段查询</a></li>
+          		<li role="separator" class="divider" style='margin:0'></li>
+          		<li class="dropdown-submenu">
+          			<a href="#" tabindex="-1">落锤式弯沉仪逐桩检测</a>
+          			<ul class="dropdown-menu pull-right">
+          				<li><a href="#" onclick="onCheZhe2()">FWD(10m)</a></li>
+          				<li role="separator" class="divider" style='margin:0'></li>
+          				<li><a href="#" onclick="onCheZhe3()">贝克曼梁</a></li>
+          				<li role="separator" class="divider" style='margin:0'></li>
+          				<li><a href="#" onclick="onCheZhe4()">对点FWD</a></li>
+          				<li role="separator" class="divider" style='margin:0'></li>
+          				<li><a href="#" onclick="onCheZhe5()">激光弯沉</a></li>
+          				<li role="separator" class="divider" style='margin:0'></li>
+          				<li><a href="#" onclick="onCheZhe6()">自动弯沉</a></li>
+          			</ul>
+          		</li>
+          		<li role="separator" class="divider" style='margin:0'></li>
+          		<li><a href="#" onclick="onCheZhe7()">路基土压力逐日变化分析查询</a></li>
+          		<li role="separator" class="divider" style='margin:0'></li>
+          		<li><a href="#" onclick="onCheZhe8()">层间位移计月变化统计查询</a></li>
+          		<li role="separator" class="divider" style='margin:0'></li> 
+          		<li><a href="#" onclick="onCheZhe9()">路面裂缝率分车道分路段统计查询</a></li>
+          	</ul>
+          </li>
+        </ul>
+      </div>
+
+      <button type="button" class="btn btn-default" onclick="OutlierDetect()">异常值检测 <span class="glyphicon glyphicon-pencil"></button>
+      <button type="button" class="btn btn-default" onclick="Polyfit()">曲线拟合 <span class="glyphicon glyphicon-globe"></span></button>
+      <button type="button" class="btn btn-default" onclick="OnGraph()"> 统计作图 <span class="glyphicon glyphicon-stats"></span></button>
+      
+      <div class='btn-group' id="filterMenu">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          	应用滤波  <span class="glyphicon glyphicon-equalizer"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li v-for="filter in filters"><a href='#' v-bind:title="filter.description" v-bind:filter="filter.functionName" @click="applyFilter">{{filter.title}}</a></li>
+          <li role="separator" class="divider" style='margin:0'></li>
+          <li><a href="#" @click="getFilters">全部刷新</a></li>
+        </ul>
+      </div>
+      
+      <button type="button" class="btn btn-default pull-right" onclick="export_excel()">导出Excel <span class="glyphicon glyphicon-download"></span></button>
+    </div>
+
+    <div class="row-fluid" style='margin-top: 20px'>
+      <div id="handsontable" width="100%"></div>
+    </div>
+    
+    <div id="filterDialog" class="modal fade" role="dialog">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+	   			<div class="modal-header">
+	            	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	            	<h4 class="modal-title">应用滤波</h4>
+	          	</div>
+		        <div class="modal-body">
+		          <label for="outlierSelectCol">请选择列</label>
+		          <select class="selectCol filterSelectCol" id='filterSelectCol'></select>
+		          <button type="button" class="btn btn-primary" id="filterSubmitButton">OK</button>
+		        </div>
+         		<div class="modal-footer">
+         		</div>
+    		</div>
+    	</div>
+    </div>
+
+    <div id='outlierDialog' class="modal fade" role="dialog" style="height:100%;width:100%;">
+      <div class="modal-dialog" style="height:auto;width:auto;">
+        <!-- Modal content-->
+        <div class="modal-content" >
+          <div class="modal-header" style="background-image:url(../common/images/11.png);background-repeat:repeat-x;padding-left:15px;padding-top:7px;height:30px;">
+            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+            <img src="/otp4-app/res/common/images/sys/shanchu.png" style="float:right;margin-right:-10px;margin-top:-3px;opacity:1;" class="close" data-dismiss="modal" >
+            <b class="modal-title">异常值检测</b>
+          </div>
+          <div class="modal-body" >
+            <label for="outlierSelectCol">请选择要检验的列</label>
+            <select class="selectCol outlierSelectCol" id='outlierSelectCol' style="margin-left:10px;width:85px;"></select>
+            <p/> <label>请选择检验方法</label>
+            <ul class="list-group">
+              <li class="list-group-item"><input type="radio" name="outlier_method" value="Chauvenet" checked>肖维勒法则 (频率趋近于概率)</li>
+              <li class="list-group-item"><input type="radio" name="outlier_method" value="IQR">四分位距法（[Q1-1.5IQR,Q3+1.5IQR])</li>
+              <li class="list-group-item"><input type="radio" name="outlier_method" value="PauTa">拉依达法则(测量次数>10或经大量重复测量，置信概率99.73%)</li>
+              <li class="list-group-item"><input type="radio" name="outlier_method" value="Grubbs">格拉布斯法则(测量次数
+                <100,置信概率95%,一个异常值时判别效率最高)</li>
+            </ul>
+            <button type="button" class="btn btn-primary" onclick='startOutlierDetect()'>OK</button>
+          </div>
+          <div class="modal-footer">
+            <p id="outlierResult"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id='queryDialog' class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">查询数据</h4>
+          </div>
+          <div class="modal-body">
+            <div id="vueOne">
+              <label>埋设深度</label>
+                <select v-model="depthSelected" @change="updateVueOptions()">
+                  <option value=''>--请选择--</option>
+                  <option v-for="option in options.depthList" v-bind:value="option.val">
+                    {{ option.txt }}
+                  </option>
+                </select><br/>
+
+                <label>断面</label>
+                <select v-model="roadSelected" @change="updateVueOptions()">
+                  <option value=''>--请选择--</option>
+                  <option v-for="option in options.roadList" v-bind:value="option.val">
+                    {{ option.txt }}
+                  </option>
+                </select><br/>
+
+                <label>类型</label> 
+                <select v-model="typeSelected" @change="updateVueOptions()">
+                  <option value=''>--请选择--</option>
+                  <option v-for="option in options.typeList" v-bind:value="option.val">
+                    {{ option.txt }}
+                  </option>
+                </select><br/>
+
+                <label>层位</label> 
+                <select v-model="laySelected" @change="updateVueOptions()"> 
+                  <option value=''>--请选择--</option>
+                  <option v-for="option in options.layList" v-bind:value="option.val">
+                    {{ option.txt }}
+                  </option>
+                </select><br/>
+
+                <label>层位</label> 
+                <select v-model="sensorsSelected" multiple > 
+                  <option v-for="option in options.sensorList" v-bind:value="option.VAL">
+                    {{ option.TXT }}
+                  </option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick='startQuery()'>OK</button>
+          </div>
+          <div class="modal-footer">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id='polyfitDialog' class="modal fade" role="dialog" style="height:100%;width:100%;">
+      <div class="modal-dialog"  style="height:auto;width:auto;">
+        <!-- Modal content-->
+        <div class="modal-content" id="polyfitContent">
+          <div class="modal-header" style="background-image:url(../common/images/11.png);background-repeat:repeat-x;padding-left:15px;padding-top:7px;height:30px;">
+            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+            <img src="/otp4-app/res/common/images/sys/shanchu.png" style="float:right;margin-right:-10px;margin-top:-3px;opacity:1;" class="close" data-dismiss="modal" >
+            <b class="modal-title">曲线拟合</b>
+          </div>
+          <div class="modal-body">
+            <label for="polyfitSelectX">请选择X坐标</label>
+            <select class="selectCol polyfitSelectCol" id="polyfitSelectX" style="margin-left:10px;width:85px;"></select>
+
+            <label for="polyfitSelectY" style="margin-left:20px;">请选择Y坐标</label>
+            <select class="selectCol polyfitSelectCol" id="polyfitSelectY" style="width:85px;margin-left:10px;"></select>
+            <label for="poly_n" style="margin-left:10px;">请选择类型</label>
+            <select id="poly_n" style="width:150px;margin-left:10px;">
+                <option value="linear" selected="">线性回归</option>
+                <option value="2">二次多项式</option>
+                <option value="3">三次多项式</option>
+                <option value="4">四次多项式</option>
+                <option value="linearThroughOrigin">原点直线</option>
+                <option value="exponential">指数拟合</option>
+                <option value="logarithmic">对数拟合</option>
+                <option value="power">幂函数拟合</option>
+              </select>
+
+            <button type="button" class="btn btn-primary center btn-xs" onclick="startPolyfit() " style="height: 23px; width: 90px; margin-left: 20px; border: medium none; margin-top: -5px;">开始</button>
+            <div style='margin-top:20px;height:320px' id='polyfitCanvas'></div>
+            <h3 style="color:red; font-size:18px; height: 16px;width: 100%; text-align:center; " id='polyTitle'></h3>
+          </div>
+           <script>
+	  			var height = $("#polyfitDialog").height().toString();
+				$("#polyfitContent").css("height",(parseInt(height)-60)+'px');
+	  		</script>
+        </div>
+
+      </div>
+    </div>
+    
+    <div id='chezhe' class="modal fade" role="dialog" style="width:auto;height:auto;">
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+            		<div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu">
+			            		<div class="form-group" >
+				          		 	<label for="pileNo1" class="col-lg-2 control-label" style="width:100px;float:left;">检测时间</label>
+							        <div class="col-lg-4" style="width:200px;float:left;">
+								        <select id="pileNo1" class="selectpicker form-control" onchange="applyCheckTime(event);">
+								        </select>
+							        </div>
+							    </div>
+						  </form>
+					</div>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main9" style="width:800px;height:400px;"></div>
+					<script>
+						document.getElementById("main9").style.width = $("body").css("width");
+						 // 基于准备好的dom，初始化echarts实例
+				        var myChart9 = echarts.init(document.getElementById('main9'));
+						// 指定图表的配置项和数据
+				        var option9 = {
+				            title: {
+				                text: '沥青路面车辙数据分段统计'
+				            },
+				            tooltip: {trigger:'axis'},
+				            grid:{
+								left:"30px",
+							},
+				            legend: {
+				                data:['轮迹带1的均值','轮迹带2的均值']
+				            },
+				            xAxis: {
+				                name:'断面'
+				            },
+				            yAxis: {
+								name:'mm',
+								nameGap:5
+							},
+				            series: [{
+				                name: '轮迹带1的均值',
+				                type: 'line'
+				            },{
+				                name: '轮迹带2的均值',
+				                type: 'line'
+				            }]
+				        };
+				
+				        // 使用刚指定的配置项和数据显示图表。
+				       // myChart9.setOption(option9);
+				        $.ajax({
+					         url:'/otp4-app/wancheng/rutPileNo.do',
+					         data:{unitType:"rutPileNo"},
+					         dataType:"json",
+					         success:function(p){
+							         value = p['data'];
+							         if(value!=null){
+							        	 option9.series[0]['data']=value[0];
+							        	 option9.series[1]['data']=value[1];
+							         }
+							         myChart9.hideLoading();
+							         option9.xAxis.data = p['x_axis'];
+							         myChart9.setOption(option9);  
+					         }
+			         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe1' class="modal fade" role="dialog" style="width:auto;height:auto;">
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main1" style="width:1400px;height:400px;"></div>
+					<script>
+						document.getElementById("main1").style.width = $("body").css("width");
+						 // 基于准备好的dom，初始化echarts实例
+						var myChart1 = echarts.init(document.getElementById('main1'));
+						// 指定图表的配置项和数据
+						var option1 = {
+							title: {
+								text: '沥青路面车辙深度逐点数据表'
+							},
+							tooltip: {},
+							grid:{
+								left:"30px",
+							},
+							legend: {
+								data:['STR1断面','STR2断面','STR3断面']
+							},
+							xAxis: {
+								name:'分布点',
+								data: ["A","B","C","D"]
+							},
+							yAxis: {
+								name:'车辙深度',
+								nameGap:5
+							},
+							series: [{
+								name: 'STR1断面',
+								type: 'line',
+								data: [5, 20, 36, 10]
+							},{
+								name:'STR2断面',
+								type:'line',
+								data:[2,10,12,22]
+							},{
+								name:'STR3断面',
+								type:'line',
+								data:[2,12,2,2]
+							}]
+						};
+						// 使用刚指定的配置项和数据显示图表。
+						myChart1.setOption(option1);
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe2' class="modal fade" role="dialog" style="width:auto;height:auto;overflow-x:auto; ">
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+            		<div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu2">
+							    <div class="form-group">
+								      <label for="basic7" class="col-lg-2 control-label" style="width:100px;float:left;">检测时间</label>
+								      <div class="col-lg-4" style="width:200px;float:left;">
+									        <select id="basic7" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+								       <label for="basic8" class="col-lg-2 control-label" style="width:100px;float:left;">检测单位</label>
+								       <div class="col-lg-4" style="width:250px;float:left;">
+									        <select id="basic8" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+							     </div>
+						  </form>
+					  </div>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main2" style="width:1400px;height:400px;">
+    				</div>
+					<script>
+						 document.getElementById("main2").style.width = $("body").css("width");
+						 function getSectionNo(pileNo){
+							 if((pileNo>='ZK0+000'&&pileNo<='ZK0+030')||(pileNo>='ZK2+000'&&pileNo<='ZK2+030')){
+								 return 'STR11';
+							 }else if(pileNo>='ZK0+030'&&pileNo<='ZK0+090'){
+								 return 'STR15';
+							 }else if(pileNo>='ZK0+090'&&pileNo<='ZK0+160'){
+								 return 'STR3';
+							 }else if(pileNo>='ZK0+160'&&pileNo<='ZK0+220'){
+								 return 'STR2';
+							 }else if(pileNo>='ZK0+220'&&pileNo<='ZK0+660'){
+								 return 'STR1';
+							 }else if(pileNo>='ZK0+660'&&pileNo<='ZK0+780'){
+								 return 'STR5';
+							 }else if(pileNo>='ZK0+780'&&pileNo<='ZK0+830'){
+								 return 'STR4';
+							 }else if(pileNo>='ZK0+830'&&pileNo<='ZK0+890'){
+								 return 'STR6';
+							 }else if(pileNo>='ZK0+890'&&pileNo<='ZK0+950'){
+								 return 'STR7';
+							 }else if(pileNo>='ZK0+950'&&pileNo<='ZK1+010'){
+								 return 'STR8';
+							 }else if(pileNo>='ZK1+010'&&pileNo<='ZK1+070'){
+								 return 'STR9';
+							 }else if(pileNo>='ZK1+070'&&pileNo<='ZK0+130'){
+								 return 'STR16';
+							 }else if(pileNo>='ZK1+130'&&pileNo<='ZK1+190'){
+								 return 'STR17';
+							 }else if(pileNo>='ZK1+190'&&pileNo<='ZK1+250'){
+								 return 'STR18';
+							 }else if(pileNo>='ZK1+250'&&pileNo<='ZK1+370'){
+								 return 'STR19';
+							 }else if(pileNo>='ZK1+370'&&pileNo<='ZK1+420'){
+								 return 'YB-STR6';
+							 }else if(pileNo>='ZK1+420'&&pileNo<='ZK1+470'){
+								 return 'YB-STR5';
+							 }else if(pileNo>='ZK1+470'&&pileNo<='ZK1+530'){
+								 return 'YB-STR4';
+							 }else if(pileNo>='ZK1+530'&&pileNo<='ZK1+580'){
+								 return 'YB-STR3';
+							 }else if(pileNo>='ZK1+580'&&pileNo<='ZK1+630'){
+								 return 'YB-STR2';
+							 }else if(pileNo>='ZK1+630'&&pileNo<='ZK1+680'){
+								 return 'YB-STR1';
+							 }else if(pileNo>='ZK1+680'&&pileNo<='ZK1+810'){
+								 return 'STR13';
+							 }else if(pileNo>='ZK1+810'&&pileNo<='ZK1+870'){
+								 return 'STR12';
+							 }else if(pileNo>='ZK1+870'&&pileNo<='ZK1+940'){
+								 return 'STR14';
+							 }else if(pileNo>='ZK1+940'&&pileNo<='ZK2+000'){
+								 return 'STR10';
+							 }else{
+								 return null;
+							 }
+						 }
+						 // 基于准备好的dom，初始化echarts实例
+						var myChart2 = echarts.init(document.getElementById('main2'));
+						myChart2.showLoading({text:'正在努力读取数据中...'});
+						// 指定图表的配置项和数据
+						var option2 = {
+							title: {
+								text: 'FWD(10m)'
+							},
+							toolbox: {
+									show : true,  
+									feature : {  
+										restore: {show: true},
+										saveAsImage : {show: true} 
+									},
+									right:'7%',
+									top:-5
+							}, 
+							tooltip: {
+								trigger:'axis',
+								formatter:function(params){
+									if(params==null){
+										return '';
+									}
+									if(params.length<0){
+										return '';
+									}
+									var res = params[0].name+'</br>'; 
+									sectionParam = params[0].name;  
+									for(var i=0;i<params.length;i++){
+										var pointColor = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:'+params[i].color+'"></span>'
+										res += pointColor+params[i].seriesName+'：'+((typeof params[i].value)=='undefined'?'':params[i].value)+'</br>';
+									} 
+									return res;
+								}
+							},
+							grid:{
+								left:"40px",
+							},
+							legend: {
+								data:['内侧5t','内侧7t','内侧9t','内侧11t','外侧5t','外侧7t','外侧9t','外侧11t']
+							},
+							xAxis: {
+								name:'桩号'
+							},
+							yAxis: {
+								name:'弯成(mm)',
+								nameGap:5
+							},
+							series: [{
+								name: '内侧5t',
+								type: 'line'
+								,
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							},{
+								name: '内侧7t',
+								type: 'line',
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							},{
+								name: '内侧9t',
+								type: 'line',
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							},{
+								name: '内侧11t',
+								type: 'line',
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							},{
+								name: '外侧5t',
+								type: 'line',
+								lineStyle:{
+									normal:{
+										type:'dashed'
+									}
+								},
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							},{
+								name: '外侧7t',
+								type: 'line',
+								lineStyle:{
+									normal:{
+										type:'dashed'
+									}
+								},
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							},{
+								name: '外侧9t',
+								type: 'line',
+								lineStyle:{
+									normal:{
+										type:'dashed'
+									}
+								},
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							},{
+								name: '外侧11t',
+								type: 'line',
+								lineStyle:{
+									normal:{
+										type:'dashed'
+									}
+								},
+								markArea:{
+									silent:true,
+									label:{
+										normal:{
+											textStyle:{
+												fontSize:5
+											}
+										}
+									}
+								}
+							}]
+						};
+						// 使用刚指定的配置项和数据显示图表。
+						//myChart3.setOption(option3);
+						 $.ajax({
+						         url:'/otp4-app/wancheng/fwd10m.do',
+						         data:{unitType:"fwd10m"},
+						         dataType:"json",
+						         success:function(p){
+								         value = p['data'];
+								         var markAreaData = p['str'];
+								         if(value!=null){
+								        	 option2.series[0]['data']=value[0];
+								        	 option2.series[1]['data']=value[1];
+								        	 option2.series[2]['data']=value[2];
+								        	 option2.series[3]['data']=value[3];
+								        	 option2.series[4]['data']=value[4];
+								        	 option2.series[5]['data']=value[5];
+								        	 option2.series[6]['data']=value[6];
+								        	 option2.series[7]['data']=value[7];
+								        	 for(var j=0;j<8;j++){
+								        		 option2.series[j].markArea.data = markAreaData;
+								        	 }
+								         }
+								         myChart2.hideLoading();
+								         option2.xAxis.data = p['x_axis'];
+								         myChart2.setOption(option2);  
+								         /*var zr = myChart2.getZr();
+								         zr.on("click",function(params){
+								        	 var pointInPixel = [params.offsetX, params.offsetY];
+											// var pointInGrid = myChart.convertFromPixel('grid', pointInPixel);
+											if(myChart2.containPixel('grid', pointInPixel)){
+												//alert(getSectionNo(sectionParam));
+											}
+								         });*/
+						         }
+				         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe3' class="modal fade" role="dialog" >
+    	<div class="modal-dialog" style="height:auto;width:auto;">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+            		<div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu2">
+							    <div class="form-group">
+								      <label for="basic3" class="col-lg-2 control-label " style="width:100px;float:left;">检测时间</label>
+								      <div class="col-lg-4" style="width:200px;float:left;">
+									        <select id="basic3" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+								       <label for="basic4" class="col-lg-2 control-label" style="width:100px;float:left;">检测单位</label>
+								       <div class="col-lg-4" style="width:250px;float:left;">
+									        <select id="basic4" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+							     </div>
+						  </form>
+					  </div>
+    			</div>
+    			<div class="modal-body" >
+    				<div id="main3" style="width:1400px;height:400px;"></div>
+					<script>
+						document.getElementById("main3").style.width = $("body").css("width");
+						 // 基于准备好的dom，初始化echarts实例
+						var myChart3 = echarts.init(document.getElementById('main3'));
+						myChart3.showLoading({text:'正在努力读取数据中...'});
+						// 指定图表的配置项和数据
+						var option3 = {
+							title: {
+								text: '贝克曼梁'
+							},
+							tooltip: {trigger:'axis'},
+							grid:{
+								left:"40px",
+							},
+							legend: {
+								data:['行车道','超车道']
+							},
+							xAxis: {
+								name:'桩号'
+							},
+							yAxis: {
+								name:"mm",
+								nameGap:5
+							},
+							series: [{
+								name: '行车道',
+								type: 'line'
+							},{
+								name: '超车道',
+								type: 'line'
+							}]
+						};
+				
+						// 使用刚指定的配置项和数据显示图表。
+						//myChart3.setOption(option3);
+						 $.ajax({
+						         url:'/otp4-app/wancheng/jiguanwancheng.do',
+						         data:{unitType:"beikemanl"},
+						         dataType:"json",
+						         success:function(p){
+								         value = p['data'];
+								         if(value!=null){
+								        	 option3.series[0]['data']=value[0];
+								        	 option3.series[1]['data']=value[1];
+								         }
+								         myChart3.hideLoading();
+								         option3.xAxis.data = p['x_axis'];
+								         myChart3.setOption(option3);  
+						         }
+				         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe4' class="modal fade" role="dialog" style="width:auto;height:auto;">
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+            		<div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu2">
+							    <div class="form-group">
+								      <label for="basic9" class="col-lg-2 control-label" style="width:100px;float:left;">检测时间</label>
+								      <div class="col-lg-4" style="width:200px;float:left;">
+									        <select id="basic9" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+								       <label for="basic10" class="col-lg-2 control-label" style="width:100px;float:left;">检测单位</label>
+								       <div class="col-lg-4" style="width:250px;float:left;">
+									        <select id="basic10" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+							     </div>
+						  </form>
+					  </div>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main4" style="width:1400px;height:400px;"></div>
+					<script>
+						document.getElementById("main4").style.width = $("body").css("width");
+						 // 基于准备好的dom，初始化echarts实例
+						var myChart4 = echarts.init(document.getElementById('main4'));
+						myChart4.showLoading({text:'正在努力读取数据中...'});
+						// 指定图表的配置项和数据
+						var option4 = {
+							title: {
+								text: '对点FWD'
+							},
+							tooltip: {trigger:'axis'},
+							grid:{
+								left:"40px",
+							},
+							legend: {
+								data:['5t','7t','9t','11t']
+							},
+							xAxis: {
+								name:'桩号'
+							},
+							yAxis: {
+								name:'弯成(mm)',
+								nameGap:5
+							},
+							series: [{
+								name: '5t',
+								type: 'line'
+							},{
+								name: '7t',
+								type: 'line'
+							},{
+								name: '9t',
+								type: 'line'
+							},{
+								name: '11t',
+								type: 'line'
+							}]
+						};
+				
+						// 使用刚指定的配置项和数据显示图表。
+						//myChart4.setOption(option4);
+						$.ajax({
+					         url:'/otp4-app/wancheng/duidianfwd10m.do',
+					         data:{unitType:"duidianfwd10m"},
+					         dataType:"json",
+					         success:function(p){
+							         value = p['data'];
+							         if(value!=null){
+							        	 option4.series[0]['data']=value[0];
+							        	 option4.series[1]['data']=value[1];
+							        	 option4.series[2]['data']=value[2];
+							        	 option4.series[3]['data']=value[3];
+							         }
+							         myChart4.hideLoading();
+							         option4.xAxis.data = p['x_axis'];
+							         myChart4.setOption(option4);  
+					         }
+			         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe5' class="modal fade" role="dialog" style="height:auto;width:auto;">
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+			     	 <div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu">
+							    <div class="form-group">
+								      <label for="basic" class="col-lg-2 control-label" style="width:100px;float:left;">检测时间</label>
+								      <div class="col-lg-4" style="width:200px;float:left;">
+									        <select id="basic" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+								       <label for="basic1" class="col-lg-2 control-label" style="width:100px;float:left;">检测单位</label>
+								       <div class="col-lg-4" style="width:250px;float:left;">
+									        <select id="basic1" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+							     </div>
+						  </form>
+					  </div>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main5" style="width:1400px;height:400px;"></div>
+					<script>
+						document.getElementById("main5").style.width = $("body").css("width");
+						 // 基于准备好的dom，初始化echarts实例
+						var myChart5 = echarts.init(document.getElementById('main5'));
+						    myChart5.showLoading({text:'正在努力读取数据中...'});
+						    var value=[];
+						// 指定图表的配置项和数据
+						var option5 = {
+							title: {
+								text: '激光弯成'
+							},
+							tooltip: {
+								trigger:'axis',
+								axisPointer: {
+					                type: 'cross'
+					            },
+							},
+							grid:{
+								left:"40px",
+							},
+							legend: {
+								data:['行车道','超车道']
+							},
+							xAxis: {
+								name:'桩号',
+							},
+							yAxis: {
+								name:'(mm)',
+								nameGap:5
+							},
+							series: [{
+								name: '行车道',
+								type: 'line'
+							},{
+								name: '超车道',
+								type: 'line'
+							}]
+						};
+						
+						// 使用刚指定的配置项和数据显示图表。
+						//myChart5.setOption(option5);
+						 $.ajax({
+						         url:'/otp4-app/wancheng/jiguanwancheng.do',
+						         dataType:"json",
+						         data:{unitType:"jiguang"},
+						         success:function(p){
+								         value = p['data'];
+								         if(value!=null){
+									         option5.series[0]['data']=value[0];
+									         option5.series[1]['data']=value[1];
+								         }
+								         myChart5.hideLoading();
+								         option5.xAxis.data = p['x_axis'];
+								         myChart5.setOption(option5);  
+						         }
+				         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe6' class="modal fade" role="dialog" >
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+            		 <div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu">
+			            		<div class="form-group" >
+								      <label for="basic5" class="col-lg-2 control-label" style="width:100px;float:left;">检测时间</label>
+								      <div class="col-lg-4" style="width:200px;float:left;">
+									        <select id="basic5" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+								       <label for="basic6" class="col-lg-2 control-label" style="width:100px;float:left;">检测单位</label>
+								       <div class="col-lg-4" style="width:250px;float:left;">
+									        <select id="basic6" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+							     </div>
+					      </form>
+					</div>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main6" style="width:1400px;height:400px;"></div>
+					<script>
+						document.getElementById("main6").style.width = $("body").css("width");
+						 // 基于准备好的dom，初始化echarts实例
+						var myChart6 = echarts.init(document.getElementById('main6'));
+						// 指定图表的配置项和数据
+						var option6 = {
+							title: {
+								text: '自动弯成'
+							},
+							tooltip: {trigger:'axis'},
+							grid:{
+								left:"40px",
+							},
+							legend: {
+								data:['内侧','外侧']
+							},
+							xAxis: {
+								name:'桩号'
+							},
+							yAxis: {
+								name:'弯成(mm)',
+								nameGap:5
+							},
+							series: [{
+								name: '内侧',
+								type: 'line',
+								connectNulls:true,
+								smooth:true
+							},{
+								name: '外侧',
+								type: 'line',
+								connectNulls:true,
+								smooth:true
+							}]
+						};
+				
+						// 使用刚指定的配置项和数据显示图表。
+						//myChart6.setOption(option6);
+						 $.ajax({
+						         url:'/otp4-app/wancheng/jiguanwancheng.do',
+						         dataType:"json",
+						         data:{unitType:"zidongwanc"},
+						         success:function(p){
+								         value = p['data'];
+								         if(value!=null){
+									         option6.series[0]['data']=value[0];
+									         option6.series[1]['data']=value[1];
+								         }
+								         myChart6.hideLoading();
+								         option6.xAxis.data = p['x_axis'];
+								         myChart6.setOption(option6);  
+						         }
+				         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe7' class="modal fade" role="dialog" >
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+          		 	<div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu">
+			            		<div class="form-group" >
+				          		 	<label for="pileNo" class="col-lg-2 control-label" style="width:100px;float:left;">检测断面</label>
+							        <div class="col-lg-4" style="width:200px;float:left;">
+								        <select id="pileNo" class="selectpicker form-control" onchange="applyCheckTime(event);">
+								        </select>
+							        </div>
+							    </div>
+						  </form>
+					</div>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main7" style="width:1400px;height:400px;"></div>
+					<script>
+						document.getElementById("main7").style.width = $("body").css("width");
+						 // 基于准备好的dom，初始化echarts实例
+						var myChart7 = echarts.init(document.getElementById('main7'));
+						// 指定图表的配置项和数据
+						var option7 = {
+							title: {
+								text: '路基土压力逐日变化分析'
+							},
+							tooltip: {trigger:'axis'},
+							grid:{
+								left:"40px",
+								top:100
+							},
+							legend: {
+								width:'400px',
+								height:'100px',
+								right:'100px'
+							},
+							xAxis: {
+								name:'日期',
+								boundaryGap:true,
+								axisTick:{
+									alignWithLabel:true
+								}
+							},
+							yAxis: {
+								name:'工程值',
+								nameGap:5
+							},
+							series: []
+						};
+				
+						// 使用刚指定的配置项和数据显示图表。
+						//myChart7.setOption(option7);
+						 $.ajax({
+						         url:'/otp4-app/wancheng/roadBasePressure.do',
+						         dataType:"json",
+						         success:function(p){
+								         value = p['data'];
+								         if(value!=null){
+									         for(var j=0;j<value.length;j++){
+									        	 var item={data:value[j],name:p['legend'][j],type:'line'};
+									        	 option7.series.push(item);
+									         }
+								         }
+								         myChart7.hideLoading();
+								         option7.xAxis.data = p['x_axis'];
+								         option7.legend.data = p['legend'];
+								         myChart7.setOption(option7);  
+						         }
+				         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+     <div id='chezhe8' class="modal fade" role="dialog" style="overflow-x:auto;">
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main8" style="width:800px;height:400px;"></div>
+					<script>
+						document.getElementById("main8").style.width = $("body").css("width");	 
+						// 基于准备好的dom，初始化echarts实例
+						var myChart8 = echarts.init(document.getElementById('main8'));
+						// 指定图表的配置项和数据
+						var option8 = {
+							title: {
+								text: '层间位移计月变化统计'
+							},
+							tooltip: {},
+							grid:{
+								left:"40px",
+							},
+							legend: {
+								data:['沥青与水泥土','混凝土与级配碎石']
+							},
+							xAxis: {
+								name:'日期',
+								data: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+								boundaryGap:true,
+								axisTick:{
+									alignWithLabel:true
+								}
+							},
+							yAxis: {
+								name:'位移(mm)',
+								nameGap:5
+							},
+							series: [{
+								name: '沥青与水泥土',
+								type: 'line',
+								data: [0.23,0.5,0.7,0.9,1.0,1.5,1.8,2.0,2.3,2.8,2.9,3.2]
+							},{
+								name: '混凝土与级配碎石',
+								type: 'line',
+								data: [1.23,1.5,1.7,1.9,2.0,2.5,2.8,3.0,3.3,3.8,3.9,4.2]
+							}]
+						};
+				
+						// 使用刚指定的配置项和数据显示图表。
+						myChart8.setOption(option8);
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div id='chezhe9' class="modal fade" role="dialog" style="overflow-x:auto;">
+    	<div class="modal-dialog" style="height:auto;width:auto;" >
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            		<b class="modal-title">统计作图</b>
+            		<div class="container" style="padding-left: 0px; margin-left: -11px; margin-top: 19px;width:100%;">
+						  <form class="form-horizontal" role="form" id="checkTimeMenu">
+			            		<div class="form-group">
+								      <label for="startTime" class="col-lg-2 control-label" style="width:114px;float:left;">检测开始时间</label>
+								      <div class="col-lg-4" style="width:172px;float:left;">
+									        <input id="startTime" class="Wdate form-control" style="height:auto;" type="text" onfocus="WdatePicker({skin:'whyGreen',maxDate: '%y-%M-%d' })" onchange="applyCheckTime(event);"/>
+								       </div>
+								      <label for="endTime" class="col-lg-2 control-label" style="width:114px;float:left;">检测结束时间</label>
+								      <div class="col-lg-4" style="width:172px;float:left;">
+									        <input id="endTime" class="Wdate form-control" style="height:auto;" type="text" onfocus="WdatePicker({skin:'whyGreen',maxDate: '%y-%M-%d' })" onchange="applyCheckTime(event);"/>
+								       </div>
+								       <label for="basic12" class="col-lg-2 control-label" style="width:87px;float:left;">检测单位</label>
+								       <div class="col-lg-4" style="width:239px;float:left;">
+									        <select id="basic12" class="selectpicker form-control" onchange="applyCheckTime(event);">
+									        </select>
+								       </div>
+							     </div>
+					     </form>
+					</div>
+    			</div>
+    			<div class="modal-body">
+    				<div id="main10" style="width:1400px;height:400px;"></div>
+					<script>
+						document.getElementById("main10").style.width = $("body").css("width");	 
+						// 基于准备好的dom，初始化echarts实例
+						var myChart10 = echarts.init(document.getElementById('main10'));
+						// 指定图表的配置项和数据
+						var option10 = {
+							title: {
+								text: '路面裂缝率分车道分路段统计'
+							},
+							tooltip: {trigger:'axis'},
+							grid:{
+								left:"40px",
+								top:80
+							},
+							legend: {
+								data:['内侧','外侧']
+							},
+							xAxis: {
+								name:'断面'
+							},
+							yAxis: {
+								name:'裂缝数量',
+								nameGap:15
+							},
+							series: [{
+								name: '内侧',
+								type: 'bar',
+								itemStyle:{ 
+		                            normal:{ 
+		                                label:{ 
+		                                   show: true, 
+		                                   position:'top',
+		                                   formatter:function(a){
+		                                	   return a.data.count;
+		                                   }
+		                                }
+		                            } 
+		                        } 
+							},{
+								name: '外侧',
+								type: 'bar',
+								itemStyle:{ 
+		                            normal:{ 
+		                                label:{ 
+		                                   show: true, 
+		                                   position:'top',
+		                                   formatter:function(a){
+		                                	   return a.data.count;
+		                                   }
+		                                }
+		                            } 
+		                        } 
+							}]
+						};
+				
+						// 使用刚指定的配置项和数据显示图表。
+						//myChart9.setOption(option9);
+						 $.ajax({
+						         url:'/otp4-app/wancheng/roadCrack.do',
+						         dataType:"json",
+						         data:{unitType:"roadCrack"},
+						         success:function(p){
+								         value = p['data'];
+								         if(value!=null){
+									         option10.series[0]['data']=value[0];
+									         option10.series[1]['data']=value[1];
+								         }
+								         myChart10.hideLoading();
+								         option10.xAxis.data = p['x_axis'];
+								         option10.title.subtext = '所有段面病害总条数:'+p['count']+'条';
+								         /* option10.series[0].itemStyle.normal.label.formatter=function(a){
+								        	 return (Math.round((a.value/p['count']) * 10000)/100).toFixed(2) + '%';
+								         } */
+								         /* option10.series[1].itemStyle.normal.label.formatter=function(a){
+								        	 return (Math.round((a.value/p['count']) * 10000)/100).toFixed(2) + '%';
+								         } */
+								         myChart10.setOption(option10);  
+						         }
+				         });
+					</script>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+    <div id='graphDialog' class="modal fade" role="dialog" style="height:100%;width:100%;">
+      <div class="modal-dialog"  style="height:auto;width:auto;">
+        <!-- Modal content-->
+        <div class="modal-content" style="height:600px;" id="tongjiContent">
+          <div class="modal-header" style="background-image:url(../common/images/11.png);background-repeat:repeat-x;padding-left:15px;padding-top:7px;height:30px;">
+            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+            <img src="/otp4-app/res/common/images/sys/shanchu.png" style="float:right;margin-right:-10px;margin-top:-3px;opacity:1;" class="close" data-dismiss="modal" >
+            <b class="modal-title">统计作图</b>
+          </div>
+          <div class="modal-body" style='font-size:14px'>
+            <label>请选择图表类型: </label> 
+            <div class='chartGroup'>
+              <span>散点图 </span> <input type="radio" name="charttype" value="scatter" checked>  
+            </div>
+            <div class='chartGroup'>
+              <span>折线图 </span> <input type="radio" name="charttype" value="line"> &nbsp;&nbsp;
+              <span>直方图 </span> <input type="radio" name="charttype" value="bar"> &nbsp;&nbsp;
+            </div>
+            <div class='chartGroup'>
+              <span>饼状图 </span> <input type="radio" name="charttype" value="pie"> &nbsp;&nbsp;
+            </div>
+	            <!--  <label style="margin-left:30px;">请选择X坐标：</label>
+	             <select class="selectCol graphSelectColX" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+	             <label style="margin-left:20px;">请选择Y坐标：</label>
+	             <select class="selectCol graphSelectColY" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+	             <label style="margin-left:20px;"> 名称：</label>
+	             <input class="graphLabel" style="width:200px;margin-left:10px;" type="text">&nbsp;&nbsp;
+	             <label style="margin-left:20px;"> 过滤条件：</label>
+	             <input class="filterInput" style="width:180px;margin-left:10px;" type="text">&nbsp;&nbsp; -->
+	              <!-- <label style="margin-left:0.5%;">请选择X坐标：</label>
+			      <select class="selectCol graphSelectColX" style="width:7%;margin-left:10px;"></select>&nbsp;&nbsp;
+			      <label style="margin-left:0.5%;">请选择Y坐标：</label>
+			      <select class="selectCol graphSelectColY" style="width:7%;margin-left:10px;"></select>&nbsp;&nbsp;
+    		      <label style="margin-left:0.5%;"> 名称：</label>
+			      <input class="graphLabel" style="width:6%;margin-left:10px;" type="text">&nbsp;&nbsp;
+			      <label style="margin-left:0.5%;"> 过滤条件：</label>
+			      <input class="filterInput" style="width:6%;margin-left:10px;" type="text">&nbsp;&nbsp; -->
+			      
+	            <!--  <label style="margin-left:30px;">请选择X坐标：</label>
+	             <select class="selectCol graphSelectColX" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+	             <label style="margin-left:20px;">请选择Y坐标：</label>
+	             <select class="selectCol graphSelectColY" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+	             <label style="margin-left:20px;"> 名称：</label>
+	             <input class="graphLabel" style="width:200px;margin-left:10px;" type="text">&nbsp;&nbsp;
+	             <label style="margin-left:20px;"> 过滤条件：</label>
+	             <input class="filterInput" style="width:180px;margin-left:10px;" type="text">&nbsp;&nbsp; -->
+	              <!-- <br/>
+	              <label style="margin-left:0.5%;">请选择X坐标：</label>
+			      <select class="selectCol graphSelectColX" style="width:6.5%;margin-left:0.1%;"><option value="0">Rank</option><option value="1">Time</option><option value="2">Var X</option><option value="3">Var Y</option><option value="4">Var Z</option></select>&nbsp;&nbsp;
+			      <label style="margin-left:0.5%;">请选择Y坐标：</label>
+			      <select class="selectCol graphSelectColY" style="width:6.5%;margin-left:0.1%;"><option value="0">Rank</option><option value="1">Time</option><option value="2">Var X</option><option value="3">Var Y</option><option value="4">Var Z</option></select>&nbsp;&nbsp;
+    		      <label style="margin-left:0.5%;"> 名称：</label>
+			      <input class="graphLabel" style="width:5%;margin-left:0.1%;" type="text">&nbsp;&nbsp;
+			      <label style="margin-left:0.5%;"> 过滤条件：</label>
+			      <input class="filterInput" style="width:5%;margin-left:0.1%;" type="text">&nbsp;&nbsp;
+              -->
+               <div  class="lineChartCoord" style="text-align:left;display:block;font-size:14px;margin-top:25px;">
+                    <label>请选择X坐标</label>
+                    <select class="selectCol graphSelectColX" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+                    <label style="margin-left:10px;">请选择Y坐标</label>
+                    <select class="selectCol graphSelectColY" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+                    <label style="margin-left:10px;"> 名称</label>
+                    <input class="graphLabel" style="width:140px;margin-left:20px;" type="text">&nbsp;&nbsp;
+                    <label style="margin-left:10px;"> 过滤条件</label>
+                    <input class="filterInput" style="width:140px;margin-left:20px;" type="text">&nbsp;&nbsp;
+               </div>
+            <br/><br/> 
+
+            <!-- <a href='#' class='btn btn-xs btn-danger ' style="margin-bottom:10px;width:70px;margin-left:45.5%;margin-top:-1%;">删除</a>
+             --><div id="chartForm">
+              <div id="scatterChartForm" style="text-align:center;">
+                <div id='lineChartCoordList'>
+                  <div class="lineChartCoord" style="text-align:left;display:none;font-size:14px;">
+                    <label>请选择X坐标</label>
+                    <select class="selectCol graphSelectColX" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+                    <label style="margin-left:10px;">请选择Y坐标</label>
+                    <select class="selectCol graphSelectColY" style="width:85px;margin-left:10px;"></select>&nbsp;&nbsp;
+                    <label style="margin-left:10px;"> 名称</label>
+                    <input class="graphLabel" style="width:140px;margin-left:20px;" type="text">&nbsp;&nbsp;
+                    <label style="margin-left:10px;"> 过滤条件</label>
+                    <input class="filterInput" style="width:140px;margin-left:20px;" type="text">&nbsp;&nbsp;
+                    <a href="#" class="btn btn-xs btn-danger link_to_remove" style="margin-left:20px;width:70px;">删除</a>
+					<div style="border-top:1px dotted;width:100%;height:2px;margin-bottom:6px;margin-top:10px;"> </div>
+                  </div>
+                </div>
+
+                <a href="#" class="btn btn-xs btn-default link_to_add btn-danger" add_element="#lineChartCoordList" style="width:70px;margin-left:-2%;margin-top:2%;">添加</a>
+                 <button type="button" class="btn btn-primary btn-xs" onclick="startGraph() " style="margin-top:2%;width:70px;margin-left:2%;height:22px;text-align:center;">开始</button><br/>
+              </div>
+
+              <div id="barChartForm" class="hidden ">
+                <label>请选择X值</label>
+                <select class="selectCol  "></select>
+
+                <div id="barChartList">
+                  <div class="barChart">
+                    <label>请选择Y坐标</label>
+                    <select class="selectCol graphSelectColY"></select>
+                    <label> 名称</label>
+                  </div>
+                  <a href='#' class='btn btn-xs btn-danger link_to_remove'>删除</a>
+                </div>
+
+                <a href='#' class='btn btn-xs btn-default link_to_add' add_element='#barChartList'>添加</a>
+              </div>
+            </div>
+           
+            <div style='margin:10px;height:480px' id='graphCanvas'></div>
+          </div>
+        </div>
+      </div>
+	  <script>
+	  	var height = $("#graphDialog").height().toString();
+		$("#tongjiContent").css("height",(parseInt(height)-60+200)+'px');
+	  </script>
+    </div>
+    
+  </div>
+</body>
+
+<script src="js/pansky_bi.js"></script>
+<script id="filterScript"></script>
+
+</html>

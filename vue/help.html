@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="overflow-x:hidden;">
+  <head>
+    <meta charset="utf-8">
+    <title>帮助</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="assets/css/docs.css" rel="stylesheet">
+<style>
+body{font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+#to_top{width:30px; height:30px; padding:10px; font:14px/20px arial; text-align:center;  background:#06c; position:absolute; cursor:pointer; color:#fff}
+.size15{font-size:15px;}
+.size12{font-size:12.75px;}
+.size10{font-size:10px;}
+</style>
+    <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
+
+  </head>
+
+  <body      style="padding-top:0px;">
+
+    <!-- Navbar
+    ================================================== -->
+	<div style="height:40px;width:100%;">
+		<div style="padding-top:10px;padding-bottom:10px;float:right;width:5%;"><a class="btn btn-small btn-primary" style="width:62%;" href="#" id="search">搜索</a></div>
+		<div style="margin-top:-2px;padding-top:10px;padding-bottom:10px;margin-right:10px;float:right;width:14%;"><input type="text"  id="searchInput" style="width:95%;"/></div>
+		<div style="padding-top:10px;padding-bottom:10px;float:right;width:12%;color:gray;">文档搜索(关键字)</div>
+	</div>
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview" style="margin-top:3px;">
+  <div class="container">
+    <h1>帮助</h1>
+    <p class="lead">交通部足尺环道数据采集分析系统帮助文档</p>
+  </div>
+</header><!-- data-spy="scroll" data-target=".bs-docs-sidebar" -->
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row" id="treeMenu" style="margin-left: -40;">
+      <div class="span3 bs-docs-sidebar" style="margin-left:0px;">
+        <ul class="nav nav-list bs-docs-sidenav" style="overflow-y:scroll;height:300px;">
+          <li><a href="#download-bootstrap" class="size15" name="yb"><i class="icon-chevron-right" ></i> 一般信息</a></li>
+		  <li><a href="#download-bootstrap1" name="ybm" class="size12" style="padding-left: 76px;display:block;"><i class="icon-chevron-right"></i> 设计信息</a></li>
+		  <li><a href="#download-bootstrap11" name="ybms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 设计基本信息</a></li>
+		  <li><a href="#download-bootstrap12" name="ybms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 技术要求</a></li>
+		  <li><a href="#download-bootstrap2" name="ybn" class="size12" style="padding-left: 76px;display:block;"><i class="icon-chevron-right"></i> 建设信息</a></li>
+		  <li><a href="#download-bootstrap3" name="ybq" class="size12" style="padding-left: 76px;display:block;"><i class="icon-chevron-right"></i> 留样信息</a></li>
+		  <li><a href="#download-bootstrap4" name="ybr" class="size12" style="padding-left: 76px;display:block;"><i class="icon-chevron-right"></i> 养护信息</a></li>
+		  <li><a href="#download-bootstrap5" name="ybz" class="size12" style="padding-left: 76px;display:block;"><i class="icon-chevron-right"></i> 运营设备</a></li>
+          <li><a href="#file-structure" class="size15" name="sy"><i class="icon-chevron-right" ></i> 试验与检测</a></li>
+		   <li><a href="#file-structure1" name="sym" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 原材料</a></li>
+		<li><a href="#file-structure11" name="syms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 沥青混合料用</a></li>
+		<li><a href="#file-structure12" name="syms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 水泥混凝土用</a></li>
+		<li><a href="#file-structure13" name="syms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 水泥稳定级配碎石用</a></li>
+		<li><a href="#file-structure14" name="syms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 水泥土用</a></li>
+		<li><a href="#file-structure15" name="syms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 土基</a></li>
+		<li><a href="#file-structure2" name="syn" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 混合料</a></li>
+	    <li><a href="#file-structure21" name="syns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 沥青混合料</a></li>
+		<li><a href="#file-structure22" name="syns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 水泥混凝土</a></li>
+		<li><a href="#file-structure23" name="syns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 水泥稳定级配碎石</a></li>
+		<li><a href="#file-structure24" name="syns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 水泥土</a></li>
+		<li><a href="#file-structure25" name="syns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 级配碎石</a></li>
+          <li><a href="#contents" class="size15" name="yy"><i class="icon-chevron-right" ></i> 运营检测</a></li>
+		  <li><a href="#contents1" name="yym" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 加载车辆信息</a></li>
+		  <li><a href="#contents11" name="yyms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 加载车荷载数据</a></li>
+		<li><a href="#contents12" name="yyms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 加载车辆信息</a></li>
+		<li><a href="#contents13" name="yyms" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 运行日志</a></li>
+		  <li><a href="#contents2" name="yyn" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 加载期间信息</a></li>
+		  <li><a href="#contents21" name="yyns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 动态响应</a></li>
+		<li><a href="#contents22" name="yyns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 环境信息</a></li>
+		<li><a href="#contents23" name="yyns" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 病害图像数据</a></li>
+		  <li><a href="#contents3" name="yyq" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 检测信息</a></li>
+		  <li><a href="#contents31" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 环境信息</a></li>
+		  <li><a href="#contents32" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 承载能力</a></li>
+		  <li><a href="#contents33" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 分级荷载响应信息</a></li>
+		  <li><a href="#contents34" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 抗滑性能</a></li>
+		  <li><a href="#contents35" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 车辙</a></li>
+		  <li><a href="#contents36" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 平整度</a></li>
+		  <li><a href="#contents37" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 噪声监测</a></li>
+		  <li><a href="#contents38" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 3D雷达</a></li>
+		  <li><a href="#contents39" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 人工巡视</a></li>
+		  <li><a href="#contents310" name="yyqs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 高清摄像监视</a></li>
+		  <li><a href="#contents4" name="yyr" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 运营监控</a></li>
+		  <li><a href="#contents41" name="yyrs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 设备管理</a></li>
+		  <li><a href="#contents42" name="yyrs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 车辆管理</a></li>
+		  <li><a href="#contents43" name="yyrs" class="size10" style="padding-left: 127px;display:none;"><i class="icon-chevron-right"></i> 考勤管理</a></li>
+          <li><a href="#html-template" class="size15" name="fx"><i class="icon-chevron-right" ></i> 分析</a></li>
+		   <li><a href="#html-template1" name="fxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> BI分析</a></li>
+		    <li><a href="#html-template2" name="fxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 应用滤波函数管理</a></li>
+          <li><a href="#examples" class="size15" name="sw"><i class="icon-chevron-right" ></i> 三维地图</a></li>
+          <li><a href="#what-next" class="size15" name="gx"><i class="icon-chevron-right"></i> 共享发布</a></li>
+          <li><a href="#what-next1" name="gxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 数据搜索</a></li>
+          <li><a href="#what-next2" name="gxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 数据发布</a></li>
+          <li><a href="#what-next3" name="gxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 数据审核</a></li>
+		   <li><a href="#system-query" class="size15" name="cx"><i class="icon-chevron-right"></i> 查询检索</a></li>
+		    <li><a href="#system-query1" name="cxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 原材料试验</a></li>
+          <li><a href="#system-query2" name="cxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 混合料试验</a></li>
+          <li><a href="#system-query3" name="cxm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 一般信息</a></li>
+		    <li><a href="#system-manage" class="size15" name="xt"><i class="icon-chevron-right"></i> 系统管理</a></li>
+			<li><a href="#system-manage1" name="xtm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 机构管理</a></li>
+		    <li><a href="#system-manage2" name="xtm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 用户管理</a></li>
+			<li><a href="#system-manage3" name="xtm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 角色管理</a></li>
+		    <li><a href="#system-manage4" name="xtm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 用户授权</a></li>
+		    <li><a href="#system-manage5" name="xtm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 字典管理</a></li>
+		    <li><a href="#system-manage6" name="xtm" class="size12" style="padding-left: 76px;display:none;"><i class="icon-chevron-right"></i> 日志管理</a></li>
+        </ul>
+      </div>
+      <div class="span9">
+
+
+
+        <!-- Download
+        ================================================== -->
+        <section id="download-bootstrap">
+          <div class="page-header">
+            <h1>1. 一般信息</h1>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame6" width="100%" ></iframe>
+          
+        </section>
+
+		 <section id="download-bootstrap1">
+          <div class="page-header">
+            <h2>1.1 设计信息</h2>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame9" width="100%" ></iframe>
+          
+        </section>
+
+		 <section id="download-bootstrap11">
+          <div class="page-header">
+            <h3>1.1.1 设计基本信息</h3>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame20" width="100%" ></iframe>
+          
+        </section>
+
+		 <section id="download-bootstrap12">
+          <div class="page-header">
+            <h3>1.1.2 技术要求</h3>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame21" width="100%" ></iframe>
+          
+        </section>
+
+		 <section id="download-bootstrap2">
+          <div class="page-header">
+            <h2>1.2 建设信息</h2>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame10" width="100%" ></iframe>
+          
+        </section>
+
+		 <section id="download-bootstrap3">
+          <div class="page-header">
+            <h2>1.3 留样信息</h2>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame11" width="100%" ></iframe>
+          
+        </section>
+
+		 <section id="download-bootstrap4">
+          <div class="page-header">
+            <h2>1.4 养护信息</h2>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame12" width="100%" ></iframe>
+          
+        </section>
+
+		 <section id="download-bootstrap5">
+          <div class="page-header">
+            <h2>1.5 运营设备</h2>
+          </div>
+       <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame13" width="100%" ></iframe>
+          
+        </section>
+
+
+
+        <!-- File structure
+        ================================================== -->
+        <section id="file-structure">
+          <div class="page-header">
+            <h1>2. 试验与检测</h1>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame5" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure1">
+          <div class="page-header">
+            <h2>2.1 原材料</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame22" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure11">
+          <div class="page-header">
+            <h3>2.1.1 沥青混合料用</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame24" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure12">
+          <div class="page-header">
+            <h3>2.1.2 水泥混凝土用</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame25" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure13">
+          <div class="page-header">
+            <h3>2.1.3 水泥稳定级配碎石用</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame26" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure14">
+          <div class="page-header">
+            <h3>2.1.4 水泥土用</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame27" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure15">
+          <div class="page-header">
+            <h3>2.1.5 土基</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame28" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure2">
+          <div class="page-header">
+            <h2>2.2 混合料</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame23" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure21">
+          <div class="page-header">
+            <h3>2.2.1 沥青混合料</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame29" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure22">
+          <div class="page-header">
+            <h3>2.2.2 水泥混凝土</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame30" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure23">
+          <div class="page-header">
+            <h3>2.2.3 水泥稳定级配碎石</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame31" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure24">
+          <div class="page-header">
+            <h3>2.2.4 水泥土</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame32" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="file-structure25">
+          <div class="page-header">
+            <h3>2.2.5 级配碎石</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame33" width="100%" ></iframe>
+          
+        </section>
+
+
+
+        <!-- Contents
+        ================================================== -->
+        <section id="contents">
+          <div class="page-header">
+            <h1>3. 运营检测</h1>
+          </div>
+         <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame4" width="100%" ></iframe>
+          
+          <p>在后面的文档中, 我们会挨个详细的介绍这些组件的细节。在此之前, 先来看看如何使用并定制它们。</p>
+        </section>
+
+		<section id="contents1">
+          <div class="page-header">
+            <h2>3.1 加载车辆信息</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame34" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents11">
+          <div class="page-header">
+            <h3>3.1.1 加载车荷载数据</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame38" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents12">
+          <div class="page-header">
+            <h3>3.1.2 加载车辆信息</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame39" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents13">
+          <div class="page-header">
+            <h3>3.1.3 运行日志</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame40" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents2">
+          <div class="page-header">
+            <h2>3.2 加载期间信息</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame35" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents21">
+          <div class="page-header">
+            <h3>3.2.1 动态响应</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame41" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents22">
+          <div class="page-header">
+            <h3>3.2.2 环境信息</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame42" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents23">
+          <div class="page-header">
+            <h3>3.2.3 病害图像数据</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame43" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents3">
+          <div class="page-header">
+            <h2>3.3 检测信息</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame36" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents31">
+          <div class="page-header">
+            <h3>3.3.1 环境信息</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame44" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents32">
+          <div class="page-header">
+            <h3>3.3.2 承载能力</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame45" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents33">
+          <div class="page-header">
+            <h3>3.3.3 分级荷载响应信息</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame46" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents34">
+          <div class="page-header">
+            <h3>3.3.4 抗滑性能</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame47" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents35">
+          <div class="page-header">
+            <h3>3.3.5 车辙</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame48" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents36">
+          <div class="page-header">
+            <h3>3.3.6 平整度</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame49" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents37">
+          <div class="page-header">
+            <h3>3.3.7 噪声监测</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame50" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents38">
+          <div class="page-header">
+            <h3>3.3.8 3D雷达</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame51" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents39">
+          <div class="page-header">
+            <h3>3.3.9 人工巡视</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame52" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents310">
+          <div class="page-header">
+            <h3>3.3.10 高清摄像监视</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame53" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents4">
+          <div class="page-header">
+            <h2>3.4 运营监控</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame37" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents41">
+          <div class="page-header">
+            <h3>3.4.1 设备管理</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame54" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents42">
+          <div class="page-header">
+            <h3>3.4.2 车辆管理</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame55" width="100%" ></iframe>
+          
+        </section>
+
+		<section id="contents43">
+          <div class="page-header">
+            <h3>3.4.3 考勤管理</h3>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame56" width="100%" ></iframe>
+          
+        </section>
+
+
+
+        <!-- HTML template
+        ================================================== -->
+        <section id="html-template">
+          <div class="page-header">
+            <h1>4. 分析</h1>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame3" width="100%" ></iframe>
+        </section>
+
+		 <section id="html-template1">
+          <div class="page-header">
+            <h2>4.1 BI分析</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame7" width="100%" ></iframe>
+        </section>
+
+		 <section id="html-template2">
+          <div class="page-header">
+            <h2>4.2 应用滤波函数管理</h2>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame8" width="100%" ></iframe>
+        </section>
+
+
+
+        <!-- Examples
+        ================================================== -->
+        <section id="examples">
+          <div class="page-header">
+            <h1>5. 三维地图</h1>
+          </div>
+        <iframe src="b.html" frameborder="0" scrolling="no" id="external-frame2" width="100%" ></iframe>
+          
+        </section>
+
+
+
+
+        <!-- Next
+        ================================================== -->
+        <section id="what-next">
+          <div class="page-header">
+            <h1>6. 共享发布</h1>
+          </div>
+          <pre  class="lead" style="background-color:white;border:none;">
+6.1 发布文章：
+  1.点击数据发布菜单，进入发布查询页面；
+  2.点击发布按钮,进入发布页面；
+  3.输入标题、文章类型、文件、文章内容点击发布或是存草稿按钮进行发布或保存。
+		  </pre>
+		           <pre  class="lead" style="background-color:white;border:none;">
+6.2 查询文章：
+  1.点击数据搜索菜单，进入数据查询页面；
+  2.输入起始日期、终止日期、类别、文章标题、发布人等查询条件，点击查询按钮，进行查询；
+  3.点击查看按钮，了解发布文章详情，可对包含附件进行预览或是下载。
+		  </pre>
+		           <pre  class="lead" style="background-color:white;border:none;">
+6.3 审核文章：
+  1.点击数据审核菜单，进入审核查询页面；
+  2.点击待审核、已审核、未通过按钮,对不同审核状态类型文章进行操作；
+  3.针对待审核查询，点击审核，填写审核意见，通过或是驳回，点击关闭按钮，则会关闭当前审核页。
+		  </pre>
+		  
+        </section>
+
+		<section id="what-next1">
+          <div class="page-header">
+            <h2>6.1 数据搜索</h2>
+          </div>
+         <pre  class="lead" style="background-color:white;border:none;">
+6.1 查询文章：
+  1.点击数据搜索菜单，进入数据查询页面；
+  2.输入起始日期、终止日期、类别、文章标题、发布人等查询条件，点击查询按钮，进行查询；
+  3.点击查看按钮，了解发布文章详情，可对包含附件进行预览或是下载。
+		  </pre>
+        </section>
+
+		<section id="what-next2">
+          <div class="page-header">
+            <h2>6.2 数据发布</h2>
+          </div>
+          <pre  class="lead" style="background-color:white;border:none;">
+6.2 发布文章：
+  1.点击数据发布菜单，进入发布查询页面；
+  2.点击发布按钮,进入发布页面；
+  3.输入标题、文章类型、文件、文章内容点击发布或是存草稿按钮进行发布或保存。
+		  </pre>
+        </section>
+
+	    <section id="what-next3">
+          <div class="page-header">
+            <h2>6.3 数据审核</h2>
+          </div>
+         <pre  class="lead" style="background-color:white;border:none;">
+6.3 审核文章：
+  1.点击数据审核菜单，进入审核查询页面；
+  2.点击待审核、已审核、未通过按钮,对不同审核状态类型文章进行操作；
+  3.针对待审核查询，点击审核，填写审核意见，通过或是驳回，点击关闭按钮，则会关闭当前审核页。
+		  </pre>
+        </section>
+
+		<section id="system-query">
+          <div class="page-header">
+            <h1>7. 查询与检索</h1>
+          </div>
+        <pre  class="lead" style="background-color:white;border:none;">
+7.1 原材料试验查询：
+  1.点击原材料试验信息菜单，进入原材料试验查询页面；
+  2.点击原材料类别下拉框，同时联动选择原材料,逐一选择试验、沥青类型、指标、起始试验日期、终止试验日期条件，点击查询按钮，查询满足条件列表；
+  3.对列表中的指标，点击查看，跳转指标试验查询页面，查询指标下的试验。
+		  </pre>
+		           <pre  class="lead" style="background-color:white;border:none;">
+7.2 混合料试验查询：
+  1.点击混合料试验信息菜单，进入混合料试验查询页面；
+  2.点击混合料类型下拉框，同时联动选择试验类型，逐一选择具体试验、或是路段、混合料编号、试验开始日期、试验结束日期，点击查询按钮，查询满足条件列表；
+  3.对列表中的混合料试验，点击查看，可查看试验详情信息。
+		  </pre>
+		           <pre  class="lead" style="background-color:white;border:none;">
+7.3 一般信息查询：
+  1.点击数据审核菜单，进入审核查询页面；
+  2.点击待审核、已审核、未通过按钮,对不同审核状态类型文章进行操作；
+  3.针对待审核查询，点击审核，填写审核意见，通过或是驳回，点击关闭按钮，则会关闭当前审核页。
+		  </pre>
+        </section>
+
+		<section id="system-query1">
+          <div class="page-header">
+            <h2>7.1 原材料试验</h2>
+          </div>
+         <pre  class="lead" style="background-color:white;border:none;">
+7.1 原材料试验查询：
+  1.点击原材料试验信息菜单，进入原材料试验查询页面；
+  2.点击原材料类别下拉框，同时联动选择原材料,逐一选择试验、沥青类型、指标、起始试验日期、终止试验日期条件，点击查询按钮，查询满足条件列表；
+  3.对列表中的指标，点击查看，跳转指标试验查询页面，查询指标下的试验。
+		  </pre>
+        </section>
+
+		<section id="system-query2">
+          <div class="page-header">
+            <h2>7.2 混合料试验</h2>
+          </div>
+         <pre  class="lead" style="background-color:white;border:none;">
+7.2 混合料试验查询：
+  1.点击混合料试验信息菜单，进入混合料试验查询页面；
+  2.点击混合料类型下拉框，同时联动选择试验类型，逐一选择具体试验、或是路段、混合料编号、试验开始日期、试验结束日期，点击查询按钮，查询满足条件列表；
+  3.对列表中的混合料试验，点击查看，可查看试验详情信息。
+		  </pre>
+        </section>
+
+		<section id="system-query3">
+          <div class="page-header">
+            <h2>7.3 一般信息</h2>
+          </div>
+           <pre  class="lead" style="background-color:white;border:none;">
+7.3 一般信息查询：
+  1.点击数据审核菜单，进入审核查询页面；
+  2.点击待审核、已审核、未通过按钮,对不同审核状态类型文章进行操作；
+  3.针对待审核查询，点击审核，填写审核意见，通过或是驳回，点击关闭按钮，则会关闭当前审核页。
+		  </pre>
+        </section>
+
+		<section id="system-manage">
+          <div class="page-header">
+            <h1>8. 系统管理</h1>
+          </div>
+				<iframe src="b.html" frameborder="0" scrolling="no" id="external-frame1" width="100%" ></iframe>
+        </section>
+
+		<section id="system-manage1">
+          <div class="page-header">
+            <h1>8.1 机构管理</h1>
+          </div>
+				<iframe src="b.html" frameborder="0" scrolling="no" id="external-frame14" width="100%" ></iframe>
+        </section>
+
+		<section id="system-manage2">
+          <div class="page-header">
+            <h1>8.2 用户管理</h1>
+          </div>
+				<iframe src="b.html" frameborder="0" scrolling="no" id="external-frame15" width="100%" ></iframe>
+        </section>
+
+		<section id="system-manage3">
+          <div class="page-header">
+            <h1>8.3 角色管理</h1>
+          </div>
+				<iframe src="b.html" frameborder="0" scrolling="no" id="external-frame16" width="100%" ></iframe>
+        </section>
+
+		<section id="system-manage4">
+          <div class="page-header">
+            <h1>8.4 用户授权</h1>
+          </div>
+				<iframe src="b.html" frameborder="0" scrolling="no" id="external-frame17" width="100%" ></iframe>
+        </section>
+
+		<section id="system-manage5">
+          <div class="page-header">
+            <h1>8.5 字典管理</h1>
+          </div>
+				<iframe src="b.html" frameborder="0" scrolling="no" id="external-frame18" width="100%" ></iframe>
+        </section>
+
+		<section id="system-manage6">
+          <div class="page-header">
+            <h1>8.6 日志管理</h1>
+          </div>
+				<iframe src="b.html" frameborder="0" scrolling="no" id="external-frame19" width="100%" ></iframe>
+        </section>
+
+
+      </div>
+    </div>
+
+  </div>
+
+<div id="to_top">返回顶部</div>
+   <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="assets/js/google-code-prettify/holder.min.js"></script>
+    <script src="assets/js/google-code-prettify/prettify.js"></script>
+
+    <script src="assets/js/application.js"></script>
+    <script src="assets/js/hbaidu.js"></script>
+
+<!-- 全局统计代码 -->
+<script type="text/javascript">
+/* var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F079fac161efc4b2a6f31e80064f14e82' type='text/javascript'%3E%3C/script%3E"));
+ */if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  };
+}
+</script>
+<script>
+function setIframeHeight(iframe) {
+	if (iframe) {
+		var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+		if (iframeWin.document.body) {
+			iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+		}
+	}
+	return iframe.height;
+}
+mouseClick();
+window.onload = function(){
+   var offsetTop = [];	
+  var barOffsetTop = [];
+  var lastTop = [];
+ /*  $("section").each(function(){
+			offsetTop.push($(this).height());
+  }); */
+  $("iframe").each(function(){
+	  	    setIframeHeight(this);
+	  	  	//offsetTop.push($(this).parent("section").height());
+	  	    //barOffsetTop.push({top:$(this).offset().top,name:$(this).text()});
+  }); 
+  $("section").each(function(){
+	  	  lastTop.push($(this).height()+30);
+  }); 
+  
+  var oTop = document.getElementById("to_top");
+  var firstHeight = $("#download-bootstrap").offset().top;
+  var screenw = document.documentElement.clientWidth || document.body.clientWidth;
+  var screenh = document.documentElement.clientHeight || document.body.clientHeight;
+  oTop.style.left = screenw - oTop.offsetWidth +"px";
+  oTop.style.top = screenh - oTop.offsetHeight + "px";
+    //alert($("#download-bootstrap").offset().top+'==='+$("#download-bootstrap1").css("height"));
+  //document.documentElement.scrollTop=firstHeight+441*1+30*1;
+  //alert(barOffsetTop);
+  //alert(lastTop);
+  window.onscroll = function(){
+    var scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+    oTop.style.top = screenh - oTop.offsetHeight + scrolltop +"px";
+    //var top = $(".bs-docs-sidenav").offset().top;
+    var t = 0;
+    var sum = firstHeight;
+     for(var i=0;i<lastTop.length;i++){
+    	 sum += (i-1>=0?lastTop[i-1]:0);
+    	 if(scrolltop>=sum&&scrolltop<sum+lastTop[i]){
+    		t = i;
+    		break;
+    	} 
+    }
+    $(".bs-docs-sidenav").find("li").removeClass("active");
+    $(".bs-docs-sidenav").find("li").find("a").css("color","#08c");
+    var lit = $(".bs-docs-sidenav").find("li").eq(t);
+    if(lit.find("a").css("display")=="none"){
+    	lit.find("a").css("display","block");
+    }else{
+    	lit.click();
+    }
+    lit.addClass("active");
+    lit.find("a").css("color","white");  
+  }
+  oTop.onclick = function(){
+    document.documentElement.scrollTop = document.body.scrollTop =0;
+  }
+  //setHeight(56);
+}  
+
+function mouseClick(){
+	var aa = ["gx","cx","yb","sy","yy","fx","sw","xt"];
+	var bb = ["gxm","cxm","ybm","sym","yym","fxm","swm","xtm"];
+	var cc = ["gxn","cxn","ybn","syn","yyn","fxn","swn","xtn"];
+	var dd = ["gxq","cxq","ybq","syq","yyq","fxq","swq","xtq"];
+	var ee = ["gxr","cxr","ybr","syr","yyr","fxr","swr","xtr"];
+	//var ff = ["gxz","cxz","ybz","syz","yyz","fxz","swz","xtz"];
+	$.each(aa,function(index,item){
+		$("a[name='"+item+"']").on("click",function(){
+			$("a[name$='m']").css("display","none");
+			$("a[name$='n']").css("display","none");
+			$("a[name$='q']").css("display","none");
+			$("a[name$='r']").css("display","none");
+			$("a[name$='z']").css("display","none");
+			$("a[name$='s']").css("display","none");
+			$("a[name='"+item+"m']").css("display","block");
+			$("a[name='"+item+"n']").css("display","block");
+			$("a[name='"+item+"q']").css("display","block");
+			$("a[name='"+item+"r']").css("display","block");
+			$("a[name='"+item+"z']").css("display","block");
+		});
+	});
+	$.each(bb,function(index,item){
+		$("a[name='"+item+"']").on("click",function(){
+			$("a[name$='s']").css("display","none");
+			$("a[name='"+item+"s']").css("display","block");
+		});
+	});
+	$.each(cc,function(index,item){
+		$("a[name='"+item+"']").on("click",function(){
+			$("a[name$='s']").css("display","none");
+			$("a[name='"+item+"s']").css("display","block");
+		});
+	});
+	$.each(dd,function(index,item){
+		$("a[name='"+item+"']").on("click",function(){
+			$("a[name$='s']").css("display","none");
+			$("a[name='"+item+"s']").css("display","block");
+		});
+	});
+	$.each(ee,function(index,item){
+		$("a[name='"+item+"']").on("click",function(){
+			$("a[name$='s']").css("display","none");
+			$("a[name='"+item+"s']").css("display","block");
+			/* $("li").find("a").css("background","white");
+			$(this).css("background","#08c"); */
+		});
+	});
+	/* $.each(ff,function(index,item){
+		$("a[name='"+item+"']").on("click",function(){
+			$("a[name$='s']").css("display","none");
+			$("a[name='"+item+"s']").css("display","block");
+		});
+	}); */
+}
+function setHeight(len){
+	for(var i=1;i<=len;i++){
+		setIframeHeight(document.getElementById('external-frame'+i));
+	}
+}
+
+$("#search").on("click",function(event){
+	var val = $("#searchInput").val();
+	var $this = this;
+	if(val!=null&&val!=''){
+		var f = false,href = null;
+		$("#treeMenu").find("a").each(function(){
+			if(val.trim()==$(this).text().trim()){
+				f = true;
+				$($this).attr("href",$(this).attr("href"));
+			}
+		});
+	}
+	if(!f){
+		$($this).attr("href","#");
+	}
+});
+</script>
+
+
+</body>
+</html>
